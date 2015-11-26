@@ -2,7 +2,8 @@
 
 ## Requirements
 
-TOOD
+- Python 2.7
+- Tensorflow 
 
 ## Setup
 

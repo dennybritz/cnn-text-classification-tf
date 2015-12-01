@@ -5,7 +5,7 @@ This is a simpliefied implementation of Kim's [Convolutional Neural Networks for
 Notable differences are:
 
 - No pretrained word vectors or dual channels
-
+- No weight clipping for regularization, only dropout
 
 ## Requirements
 

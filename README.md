@@ -14,6 +14,7 @@ Notable differences are:
 - Use built-in logit functions
 - Add L2 Loss?
 - Remove affine dim
+- Remove word2vec code
 
 ## Requirements
 

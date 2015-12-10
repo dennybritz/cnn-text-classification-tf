@@ -13,7 +13,7 @@ from text_cnn import TextCNN
 
 # Model Hyperparameters
 tf.flags.DEFINE_integer("embedding_dim", 128, "Dimensionality of character embedding")
-tf.flags.DEFINE_string("filter_sizes", "2,3,4", "Comma-separated filter sizes")
+tf.flags.DEFINE_string("filter_sizes", "3,4,5", "Comma-separated filter sizes")
 tf.flags.DEFINE_integer("num_filters", 128, "Number of filters, per filter size")
 tf.flags.DEFINE_float("dropout_keep_prob", 0.5, "Dropout keep probability")
 # Training parameters
@@ -48,7 +48,9 @@ y_shuffled = y[shuffle_indices]
 # TODO: This is very crude, should use cross-validation
 x_train, x_dev = x_shuffled[:-1000], x_shuffled[-1000:]
 y_train, y_dev = y_shuffled[:-1000], y_shuffled[-1000:]
+print("Vocabulary Size: {:d}".format(len(vocabulary)))
 print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
+
 
 # Training
 # ==================================================
@@ -68,7 +70,7 @@ with tf.Graph().as_default():
             num_filters=FLAGS.num_filters)
 
         # Define Training procedure
-        global_step = tf.Variable(0, name="global_step")
+        global_step = tf.Variable(0, name="global_step", trainable=False)
         optimizer = tf.train.AdamOptimizer(1e-4)
         grads_and_vars = optimizer.compute_gradients(cnn.loss)
         train_op = optimizer.apply_gradients(grads_and_vars, global_step=global_step)

@@ -60,7 +60,7 @@ class TextCNN(object):
         # Final (unnormalized) scores and predictions
         with tf.name_scope("output"):
             W = tf.Variable(tf.truncated_normal([num_filters_total, num_classes], stddev=0.1), name="W")
-            b = tf.Variable(tf.constant(0.1, shape=[num_classes]))
+            b = tf.Variable(tf.constant(0.1, shape=[num_classes]), name="b")
             self.scores = tf.nn.xw_plus_b(self.h_drop, W, b, name="scores")
             self.predictions = tf.argmax(self.scores, 1, name="predictions")
 

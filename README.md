@@ -25,6 +25,8 @@ optional arguments:
                         Comma-separated filter sizes (default: '3,4,5')
   --num_filters NUM_FILTERS
                         Number of filters per filter size (default: 128)
+  --l2_reg_lambda L2_REG_LAMBDA
+                        L2 regularizaion lambda (default: 0.0)                        
   --dropout_keep_prob DROPOUT_KEEP_PROB
                         Dropout keep probability (default: 0.5)
   --batch_size BATCH_SIZE

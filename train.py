@@ -18,7 +18,7 @@ tf.flags.DEFINE_integer("num_filters", 128, "Number of filters, per filter size"
 tf.flags.DEFINE_float("dropout_keep_prob", 0.5, "Dropout keep probability")
 # Training parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size")
-tf.flags.DEFINE_integer("num_epochs", 500, "Number of training epochs")
+tf.flags.DEFINE_integer("num_epochs", 100, "Number of training epochs")
 tf.flags.DEFINE_integer("evaluate_every", 100, "Evaluate model on dev set after this many steps")
 tf.flags.DEFINE_integer("checkpoint_every", 100, "Save model after this many  steps")
 # Misc Parameters
@@ -75,7 +75,7 @@ with tf.Graph().as_default():
         grads_and_vars = optimizer.compute_gradients(cnn.loss)
         train_op = optimizer.apply_gradients(grads_and_vars, global_step=global_step)
 
-        # Keep track of gradient values and sparsity
+        # Keep track of gradient values and sparsity (optional)
         grad_summaries = []
         for g, v in grads_and_vars:
             if g is not None:
@@ -90,9 +90,11 @@ with tf.Graph().as_default():
         out_dir = os.path.abspath(os.path.join(os.path.curdir, "runs", timestamp))
         print("Writing to {}\n".format(out_dir))
 
-        # Train Summaries
+        # Summaries for loss and accuracy
         loss_summary = tf.scalar_summary("loss", cnn.loss)
         acc_summary = tf.scalar_summary("accuracy", cnn.accuracy)
+
+        # Train Summaries
         train_summary_op = tf.merge_summary([loss_summary, acc_summary, grad_summaries_merged])
         train_summary_dir = os.path.join(out_dir, "summaries", "train")
         train_summary_writer = tf.train.SummaryWriter(train_summary_dir, sess.graph_def)
@@ -146,8 +148,8 @@ with tf.Graph().as_default():
                 writer.add_summary(summaries, step)
 
         # Generate batches
-        batches = data_helpers.batch_iter(zip(x_train, y_train), FLAGS.batch_size, FLAGS.num_epochs)
-
+        batches = data_helpers.batch_iter(
+            zip(x_train, y_train), FLAGS.batch_size, FLAGS.num_epochs)
         # Training loop. For each batch...
         for batch in batches:
             x_batch, y_batch = zip(*batch)

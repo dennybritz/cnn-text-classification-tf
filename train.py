@@ -28,9 +28,9 @@ tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device 
 tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on devices")
 
 FLAGS = tf.flags.FLAGS
-FLAGS.batch_size
+FLAGS._parse_flags()
 print("\nParameters:")
-for attr, value in sorted(FLAGS.__flags.iteritems()):
+for attr, value in sorted(FLAGS.__flags.items()):
     print("{}={}".format(attr.upper(), value))
 print("")
 
@@ -68,7 +68,7 @@ with tf.Graph().as_default():
             num_classes=2,
             vocab_size=len(vocabulary),
             embedding_size=FLAGS.embedding_dim,
-            filter_sizes=map(int, FLAGS.filter_sizes.split(",")),
+            filter_sizes=list(map(int, FLAGS.filter_sizes.split(","))),
             num_filters=FLAGS.num_filters,
             l2_reg_lambda=FLAGS.l2_reg_lambda)
 
@@ -152,7 +152,7 @@ with tf.Graph().as_default():
 
         # Generate batches
         batches = data_helpers.batch_iter(
-            zip(x_train, y_train), FLAGS.batch_size, FLAGS.num_epochs)
+            list(zip(x_train, y_train)), FLAGS.batch_size, FLAGS.num_epochs)
         # Training loop. For each batch...
         for batch in batches:
             x_batch, y_batch = zip(*batch)

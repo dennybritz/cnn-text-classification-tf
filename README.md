@@ -8,7 +8,7 @@ It is slightly simplified implementation of Kim's [Convolutional Neural Networks
 - Tensorflow 0.7
 - Numpy
 
-## Running
+## Training
 
 Print parameters:
 
@@ -52,6 +52,15 @@ Train:
 ```bash
 ./train.py
 ```
+
+## Evaluating
+
+```bash
+./eval.py --checkpoint_dir="./runs/1459637919/checkpoints/"
+```
+
+Replace the checkpoint dir with the output from the training. To use your own data, change the `eval.py` script to load your data.
+
 
 ## References
 

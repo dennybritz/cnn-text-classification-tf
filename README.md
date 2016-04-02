@@ -4,8 +4,8 @@ It is slightly simplified implementation of Kim's [Convolutional Neural Networks
 
 ## Requirements
 
-- Python 2.7
-- Tensorflow
+- Python 3
+- Tensorflow 0.7
 - Numpy
 
 ## Running

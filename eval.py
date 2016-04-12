@@ -69,6 +69,6 @@ with graph.as_default():
             all_predictions = np.concatenate([all_predictions, batch_predictions])
 
 # Print accuracy
-correct_predictions = sum(all_predictions == y_test)
+correct_predictions = float(sum(all_predictions == y_test))
 print("Total number of test examples: {}".format(len(y_test)))
-print("Accuracy: {:g}".format(correct_predictions/len(y_test)))
+print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))

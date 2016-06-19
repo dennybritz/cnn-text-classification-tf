@@ -5,7 +5,7 @@ It is slightly simplified implementation of Kim's [Convolutional Neural Networks
 ## Requirements
 
 - Python 3
-- Tensorflow 0.7
+- Tensorflow > 0.8
 - Numpy
 
 ## Training

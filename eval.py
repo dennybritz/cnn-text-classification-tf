@@ -7,6 +7,7 @@ import time
 import datetime
 import data_helpers
 from text_cnn import TextCNN
+from tensorflow.contrib import learn
 
 # Parameters
 # ==================================================
@@ -27,12 +28,14 @@ for attr, value in sorted(FLAGS.__flags.items()):
     print("{}={}".format(attr.upper(), value))
 print("")
 
-# Load data. Load your own data here
-print("Loading data...")
-x_test, y_test, vocabulary, vocabulary_inv = data_helpers.load_data()
-y_test = np.argmax(y_test, axis=1)
-print("Vocabulary size: {:d}".format(len(vocabulary)))
-print("Test set size {:d}".format(len(y_test)))
+# CHANGE THIS: Load data. Load your own data here
+x_raw = ["a masterpiece four years in the making", "everything is off."]
+y_test = [0, 1]
+
+# Map data into vocabulary
+vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab")
+vocab_processor = learn.preprocessing.VocabularyProcessor.restore(vocab_path)
+x_test = np.array(list(vocab_processor.transform(x_raw)))
 
 print("\nEvaluating...\n")
 
@@ -59,7 +62,7 @@ with graph.as_default():
         predictions = graph.get_operation_by_name("output/predictions").outputs[0]
 
         # Generate batches for one epoch
-        batches = data_helpers.batch_iter(x_test, FLAGS.batch_size, 1, shuffle=False)
+        batches = data_helpers.batch_iter(list(x_test), FLAGS.batch_size, 1, shuffle=False)
 
         # Collect the predictions here
         all_predictions = []
@@ -68,7 +71,8 @@ with graph.as_default():
             batch_predictions = sess.run(predictions, {input_x: x_test_batch, dropout_keep_prob: 1.0})
             all_predictions = np.concatenate([all_predictions, batch_predictions])
 
-# Print accuracy
-correct_predictions = float(sum(all_predictions == y_test))
-print("Total number of test examples: {}".format(len(y_test)))
-print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))
+# Print accuracy if y_test is defined
+if y_test is not None:
+    correct_predictions = float(sum(all_predictions == y_test))
+    print("Total number of test examples: {}".format(len(y_test)))
+    print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))

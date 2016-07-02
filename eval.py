@@ -15,6 +15,7 @@ from tensorflow.contrib import learn
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
 tf.flags.DEFINE_string("checkpoint_dir", "", "Checkpoint directory from training run")
+tf.flags.DEFINE_boolean("eval_train", False, "Evaluate on all training data")
 
 # Misc Parameters
 tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device placement")
@@ -29,8 +30,12 @@ for attr, value in sorted(FLAGS.__flags.items()):
 print("")
 
 # CHANGE THIS: Load data. Load your own data here
-x_raw = ["a masterpiece four years in the making", "everything is off."]
-y_test = [0, 1]
+if FLAGS.eval_train:
+    x_raw, y_test = data_helpers.load_data_and_labels()
+    y_test = np.argmax(y_test, axis=1)
+else:
+    x_raw = ["a masterpiece four years in the making", "everything is off."]
+    y_test = [1, 0]
 
 # Map data into vocabulary
 vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab")
